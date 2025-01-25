@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom right, #4CAF50, #81C784);
+      color: #333;
+      box-sizing: border-box;
+    }
+
+    .welcome-page {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      background: linear-gradient(to bottom, #388E3C, #81C784);
+      color: #fff;
+    }
+
+    .welcome-page h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .welcome-page button {
+      padding: 15px 30px;
+      background-color: #fff;
+      color: #388E3C;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .welcome-page button:hover {
+      background-color: #F1F8E9;
+    }
+
+    .container {
+      display: none;
+      max-width: 800px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #4CAF50;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin: 10px 0 5px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #388E3C;
+    }
+
+    .summary-section, .expense-list {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #F1F8E9;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .category-allocation {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #E8F5E9;
+      border-radius: 8px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #e8f5e9;
+      border-left: 4px solid #4CAF50;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    .category-allocation div {
+      margin-bottom: 10px;
+    }
+
+    .category-allocation span {
+      font-weight: bold;
+      color: #388E3C;
+    }
+
+    .well-used {
+      color: #FF5722;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <!-- Welcome Page -->
+  <div class="welcome-page">
+    <div>
+      <h1>Welcome to the Expense Tracker</h1>
+      <p>Track your expenses and manage your budget effectively without any calculations!</p>
+      <button onclick="startApp()">Get Started</button>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div class="container">
+    <h1>Expense Tracker</h1>
+    
+    <!-- Budget Section -->
+    <div class="budget-section">
+      <label for="budget">Total Monthly Budget (KSh):</label>
+      <input type="number" id="budget" placeholder="Enter total budget amount">
+      <button onclick="setBudget()">Set Budget</button>
+    </div>
+
+    <!-- Health Insurance Option -->
+    <div class="health-insurance-section">
+      <label for="health-insurance">Do you have Health Insurance?</label>
+      <select id="health-insurance">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+    </div>
+
+    <!-- Category Allocation Section -->
+    <div class="category-allocation" id="category-allocation">
+      <h2>Budget Allocation</h2>
+      <div><span>Rent:</span> <span id="alloc-rent">0</span></div>
+      <div><span>Food:</span> <span id="alloc-food">0</span></div>
+      <div><span>Health Insurance:</span> <span id="alloc-health">0</span></div>
+      <div><span>Transport:</span> <span id="alloc-transport">0</span></div>
+      <div><span>Others:</span> <span id="alloc-others">0</span></div>
+    </div>
+    
+    <!-- Expense Entry -->
+    <div class="expense-section">
+      <label for="expense-name">Expense Name:</label>
+      <input type="text" id="expense-name" placeholder="E.g., Bus Fare">
+      
+      <label for="expense-date">Date:</label>
+      <input type="date" id="expense-date">
+      
+      <label for="expense-category">Category:</label>
+      <select id="expense-category">
+        <option value="Rent">Rent</option>
+        <option value="Food">Food</option>
+        <option value="Health Insurance">Health Insurance</option>
+        <option value="Transport">Transport</option>
+        <option value="Others">Others</option>
+      </select>
+      
+      <label for="expense-amount">Amount (KSh):</label>
+      <input type="number" id="expense-amount" placeholder="E.g., 500">
+      <button onclick="addExpense()">Add Expense</button>
+    </div>
+    
+    <!-- Summary Section -->
+    <div class="summary-section">
+      <h2>Monthly Summary</h2>
+      <p><strong>Total Budget:</strong> KSh <span id="total-budget">0</span></p>
+      <p><strong>Total Expenses:</strong> KSh <span id="total-expenses">0</span></p>
+      <p><strong>Remaining Budget:</strong> KSh <span id="remaining-budget">0</span></p>
+    </div>
+    
+    <!-- Expense List -->
+    <div class="expense-list">
+      <h2>Expenses</h2>
+      <ul id="expense-list"></ul>
+    </div>
+
+    <!-- Print/Download Report -->
+    <div>
+      <button onclick="downloadReport()">Download Report</button>
+      <button onclick="printReport()">Print Report</button>
+    </div>
+  </div>
+
+  <script>
+    let totalBudget = 0;
+    let totalExpenses = 0;
+    let expenses = [];
+    let budgetAllocation = {};
+    let remainingBudget = 0;
+    let usedCategories = new Set(); // To track used categories
+
+    function startApp() {
+      document.querySelector('.welcome-page').style.display = 'none';
+      document.querySelector('.container').style.display = 'block';
+    }
+
+    function setBudget() {
+      const budgetInput = document.getElementById("budget");
+      totalBudget = parseFloat(budgetInput.value);
+      if (isNaN(totalBudget) || totalBudget <= 0) {
+        alert("Please enter a valid budget amount.");
+        return;
+      }
+
+      const healthInsurance = document.getElementById("health-insurance").value;
+
+      // Custom allocation based on percentages
+      budgetAllocation = {
+        'Rent': totalBudget * 0.40,
+        'Food': totalBudget * 0.25,
+        'Health Insurance': healthInsurance === 'yes' ? totalBudget * 0.15 : 0,
+        'Transport': totalBudget * 0.10,
+        'Others': totalBudget * 0.10
+      };
+
+      // Update the UI with the allocations
+      document.getElementById("alloc-rent").textContent = budgetAllocation['Rent'].toFixed(2);
+      document.getElementById("alloc-food").textContent = budgetAllocation['Food'].toFixed(2);
+      document.getElementById("alloc-health").textContent = budgetAllocation['Health Insurance'].toFixed(2);
+      document.getElementById("alloc-transport").textContent = budgetAllocation['Transport'].toFixed(2);
+      document.getElementById("alloc-others").textContent = budgetAllocation['Others'].toFixed(2);
+
+      updateSummary();
+    }
+
+    function addExpense() {
+      const name = document.getElementById("expense-name").value;
+      const date = document.getElementById("expense-date").value;
+      const category = document.getElementById("expense-category").value;
+      const amount = parseFloat(document.getElementById("expense-amount").value);
+
+      if (!name || !date || isNaN(amount) || amount < 1) {
+        alert("Please fill out all fields with valid data.");
+        return;
+      }
+
+      if (usedCategories.has(category)) {
+        alert("This category has already been used for an expense.");
+        return;
+      }
+
+      // Check if the expense exceeds the total budget or category allocation
+      if (totalExpenses + amount > totalBudget) {
+        alert("This expense exceeds your total budget!");
+        return;
+      }
+
+      if (budgetAllocation[category] - amount < 0) {
+        alert(`This expense exceeds your allocated budget for ${category}.`);
+        return;
+      }
+
+      totalExpenses += amount;
+      budgetAllocation[category] -= amount;
+      usedCategories.add(category); // Mark category as used
+
+      expenses.push({ name, date, category, amount });
+
+      const expenseList = document.getElementById("expense-list");
+      const item = document.createElement("li");
+      item.textContent = `${name} (${category}) - KSh ${amount} on ${date}`;
+      expenseList.appendChild(item);
+
+      updateSummary();
+
+      // Clear input fields
+      document.getElementById("expense-name").value = "";
+      document.getElementById("expense-date").value = "";
+      document.getElementById("expense-amount").value = "";
+    }
+
+    function updateSummary() {
+      document.getElementById("total-budget").textContent = totalBudget.toFixed(2);
+      document.getElementById("total-expenses").textContent = totalExpenses.toFixed(2);
+      document.getElementById("remaining-budget").textContent = (totalBudget - totalExpenses).toFixed(2);
+    }
+
+    function downloadReport() {
+      const reportContent = `
+        Total Budget: KSh ${totalBudget.toFixed(2)}
+        Total Expenses: KSh ${totalExpenses.toFixed(2)}
+        Remaining Budget: KSh ${(totalBudget - totalExpenses).toFixed(2)}
+        Expenses: ${expenses.map(exp => `${exp.name} - KSh ${exp.amount} (${exp.category})`).join('\n')}
+      `;
+      const blob = new Blob([reportContent], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'expense_report.txt';
+      a.click();
+    }
+
+    function printReport() {
+      const reportContent = `
+        <h2>Expense Report</h2>
+        <p>Total Budget: KSh ${totalBudget.toFixed(2)}</p>
+        <p>Total Expenses: KSh ${totalExpenses.toFixed(2)}</p>
+        <p>Remaining Budget: KSh ${(totalBudget - totalExpenses).toFixed(2)}</p>
+        <h3>Expenses:</h3>
+        <ul>
+          ${expenses.map(exp => `<li>${exp.name} - KSh ${exp.amount} (${exp.category})</li>`).join('')}
+        </ul>
+      `;
+      const printWindow = window.open('', '', 'width=600,height=400');
+      printWindow.document.write(reportContent);
+      printWindow.document.close();
+      printWindow.print();
+    }
+  </script>
+</body>
+</html>
